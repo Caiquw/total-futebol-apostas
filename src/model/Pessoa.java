@@ -38,7 +38,7 @@ abstract class Pessoa implements Int_Exibir {
     @Override
     public String Exibir() {
 
-        return "[" + getTipoUsuario() + "] " + nome + " (login: " + login + ")";
+        return "[ " + getTipoUsuario() + " ] " + nome + " (login: " + login + ")";
     }
 
     @Override
