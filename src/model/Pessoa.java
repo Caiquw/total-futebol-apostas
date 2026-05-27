@@ -32,7 +32,7 @@ abstract class Pessoa implements Int_Exibir {
     }
 
     // identificar tipo no ADM ou PARTICIPANTE
-    public abstract String getTipoUsuario();
+    public abstract String  getTipoUsuario();
 
 
     @Override
