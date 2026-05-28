@@ -1,8 +1,12 @@
 package model;
 
-public class EntEsportiva implements Int_Exibir {
+public abstract class EntEsportiva implements Int_Exibir {
     private String nome;
 
+    //Classe abstrata
+    public abstract String getCategoria();
+
+    //Construtores
     public EntEsportiva(){
         this.nome = "";
     }
@@ -11,6 +15,7 @@ public class EntEsportiva implements Int_Exibir {
         this.nome = nome;
     }
 
+    //Getters - Setter
     public String getNome() {
         return nome;
     }
@@ -19,17 +24,15 @@ public class EntEsportiva implements Int_Exibir {
         this.nome = nome;
     }
 
+    // Exibir padrão das classes mãe/super
     @Override
     public String Exibir(){
 
-        return "";
+        return "[" + getCategoria() + "] " + nome;
     }
 
     @Override
     public String toString(){
         return nome;
     }
-
-
-
 }
