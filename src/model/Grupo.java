@@ -53,7 +53,7 @@ public class Grupo implements Int_Exibir { //classe - molde + interface
 //--
 
     // regras de negócio
-// ADD PARTICIPANTE
+    // ADD PARTICIPANTE
     public boolean adicionarParticipante(Participante participante) {
         if (totalParticipantes >= 5) { //verifica o limite de 5 antes de adicionar
             System.out.println("Grupo cheio! Máximo de 5 participantes.");
@@ -65,7 +65,7 @@ public class Grupo implements Int_Exibir { //classe - molde + interface
     }
 
     // VERIFICAR SE GRUPO ESTÁ CHEIO
-// usado para verifica sem adicionar
+    // usado para verifica sem adicionar
     public boolean estaCheia() {
         return totalParticipantes >= 5;
     }
