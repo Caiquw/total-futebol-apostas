@@ -1,9 +1,11 @@
 package model;
 
+import java.time.LocalDateTime;
+
 public class Partida implements Int_Exibir {
     private Clube mandante;
     private Clube visitante;
-    private String dataHora; //controlar o limite de 20 min das apostas
+    private LocalDateTime dataHora; //controlar o limite de 20 min das apostas
     private int golsMandante; //placar
     private int golsVisitante; //placar
     private boolean finalizada; //resultado já foi registrado ou nao
@@ -12,13 +14,12 @@ public class Partida implements Int_Exibir {
     public Partida() { // partida vazia - sem info
         this.mandante = null;
         this.visitante = null;
-        this.dataHora = "";
         this.golsMandante = 0;
         this.golsVisitante = 0;
         this.finalizada = false;
     }
 
-    public Partida(Clube mandante, Clube visitante, String dataHora) { // partida criada com times e datas
+    public Partida(Clube mandante, Clube visitante, LocalDateTime dataHora) { // partida criada com times e datas
         this.mandante = mandante;
         this.visitante = visitante;
         this.dataHora = dataHora;
@@ -26,7 +27,16 @@ public class Partida implements Int_Exibir {
         this.golsVisitante = 0;
         this.finalizada = false; // começa em false pois ainda n aconteceu
     }
+
+    public Partida(Clube mandante, Clube visitante, LocalDateTime dataHora, Campeonato campeonato) {
+    }
     // gols e finalizada n entram nos parametros pois a partida ainda n foi jogada
+
+
+    public boolean ApostaPermitida() {
+        if (finalizada) return false;
+        return LocalDateTime.now().isBefore(dataHora.minusMinutes(20));
+    }
 
 
     // GETTERS E SETTERS
@@ -47,11 +57,11 @@ public class Partida implements Int_Exibir {
         this.visitante = visitante;
     }
 
-    public String getDataHora() {
+    public LocalDateTime getDataHora() {
         return this.dataHora;
     }
 
-    public void setDataHora(String dataHora) {
+    public void setDataHora(LocalDateTime dataHora) {
         this.dataHora = dataHora;
     }
 
