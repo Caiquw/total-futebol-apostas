@@ -21,6 +21,34 @@ public class Sistema
     private final List<Aposta> apostas;
     private final Administrador administrador;
 
+    public List<Clube> getClubes() {
+        return clubes;
+    }
+
+    public List<Campeonato> getCampeonatos() {
+        return campeonatos;
+    }
+
+    public List<Partida> getPartidas() {
+        return partidas;
+    }
+
+    public List<Grupo> getGrupos() {
+        return grupos;
+    }
+
+    public List<Participante> getParticipantes() {
+        return participantes;
+    }
+
+    public List<Aposta> getApostas() {
+        return apostas;
+    }
+
+    public Administrador getAdministrador() {
+        return administrador;
+    }
+
     private Sistema(){
 
         clubes = new ArrayList<>();

@@ -1,25 +1,45 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 public class Grupo implements Int_Exibir { //classe - molde + interface
     // private -> encapsulamento (somente a classe pode acessar)
     private String nome;
     private Campeonato campeonato;
-    private Participante[] participantes; //array pois cada grupo pode ter até 5 part.
+
+    public void setParticipantes(List<Participante> participantes) {
+        this.participantes = participantes;
+    }
+
+    public void setTotalParticipantes(int totalParticipantes) {
+        this.totalParticipantes = totalParticipantes;
+    }
+
+    private List<Participante> participantes;//array pois cada grupo pode ter até 5 part.
     private int totalParticipantes;
+
+
+    public List<Participante> getClassificacao() {
+        List<Participante> ranking = new ArrayList<>(participantes);
+        ranking.sort(Comparator.comparingInt(Participante::getPontuacaoTotal).reversed());
+        return ranking;
+    }
 
 
     //CONSTRUTORES
     public Grupo() { //construtor padrao sem parametros - sem infos ainda
         this.nome = "";
         this.campeonato = null;
-        this.participantes = new Participante[5]; //tamanho 5 limite
+        this.participantes = List.of(new Participante[5]); //tamanho 5 limite
         this.totalParticipantes = 0;
     }
 
     public Grupo(String nome, Campeonato campeonato) { //construtor sobrecarregado - info definidas
         this.nome = nome;
         this.campeonato = campeonato;
-        this.participantes = new Participante[5];
+        this.participantes = List.of(new Participante[5]);
         this.totalParticipantes = 0;
         // this significa q o atributo desta classe recebe o valor que veio como parâmetro
     }
@@ -45,7 +65,7 @@ public class Grupo implements Int_Exibir { //classe - molde + interface
         return this.totalParticipantes;
     }
 
-    public Participante[] getParticipantes() {
+    public List<Participante> getParticipantes() {
         return this.participantes;
     }
 // totalParticipantes e participantes não têm setter - não pode ser alterado por fora
@@ -59,7 +79,7 @@ public class Grupo implements Int_Exibir { //classe - molde + interface
             System.out.println("Grupo cheio! Máximo de 5 participantes.");
             return false;
         }
-        participantes[totalParticipantes] = participante;
+        participantes.set(totalParticipantes, participante);
         totalParticipantes++;
         return true;
     }
@@ -77,21 +97,23 @@ public class Grupo implements Int_Exibir { //classe - molde + interface
         // ordena por pontuação (maior para menor)
         for (int i = 0; i < totalParticipantes - 1; i++) {
             for (int j = i + 1; j < totalParticipantes; j++) {
-                if (participantes[j].getPontuacaoTotal() >
-                        participantes[i].getPontuacaoTotal()) {
-                    Participante temp = participantes[i];
-                    participantes[i] = participantes[j];
-                    participantes[j] = temp;
+                if (participantes.get(j).getPontuacaoTotal() >
+                        participantes.get(i).getPontuacaoTotal()) {
+                    Participante temp = participantes.get(i);
+                    participantes.set(i, participantes.get(j));
+                    participantes.set(j, temp);
                 }
             }
         }
 
+
+
         // exibe o resultado
         for (int i = 0; i < totalParticipantes; i++) {
             System.out.println((i + 1) + "º - " +
-                    participantes[i].getNome() +
+                    participantes.get(i).getNome() +
                     " | Pontos: " +
-                    participantes[i].getPontuacaoTotal());
+                    participantes.get(i).getPontuacaoTotal());
         }
     }
     // INTERFACE
@@ -104,4 +126,7 @@ public class Grupo implements Int_Exibir { //classe - molde + interface
     }
 // exibirInfo -> resumo rapido do grupo
 // exibirClassificacao -> ranking detalhado dos participantes + pontuacao
+
+
+
 }
