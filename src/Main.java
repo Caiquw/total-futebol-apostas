@@ -11,7 +11,7 @@ import javax.swing.SwingUtilities;
 
 public class Main {
     public static void main(String[] args) {
-
+        InicializarDB.inicializar();
 
         SwingUtilities.invokeLater(LoginFrame::new);
     }
