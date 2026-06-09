@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Partida implements Int_Exibir {
     private Clube mandante;
@@ -29,6 +30,7 @@ public class Partida implements Int_Exibir {
     }
 
     public Partida(Clube mandante, Clube visitante, LocalDateTime dataHora, Campeonato campeonato) {
+        this(mandante, visitante, dataHora);
     }
     // gols e finalizada n entram nos parametros pois a partida ainda n foi jogada
 
@@ -119,5 +121,9 @@ public class Partida implements Int_Exibir {
         // ee a partida já foi finalizada mostra o placar, senao mostra "aguardando"
     }
 
+    @Override
+    public String toString() {
+        return mandante.getNome() + " x " + visitante.getNome() + " (" + dataHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + ")";
+    }
 
 }

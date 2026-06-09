@@ -1,6 +1,7 @@
 package view;
 
 import controller.Sistema;
+import dao.UsuarioDAO;
 import model.*;
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ import java.util.List;
 public class MainFrame extends JFrame {
 
     private final Sistema sistema = Sistema.getInstancia();
+    private final UsuarioDAO usuarioDAO = new UsuarioDAO();
     private static final DateTimeFormatter DT_FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     private final boolean isAdmin;
@@ -44,26 +46,38 @@ public class MainFrame extends JFrame {
         JPanel painelBotoes = new JPanel(new GridLayout(0, 1, 4, 4));
         painelBotoes.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 5));
 
-        JButton btnClubes       = new JButton("Cadastrar Clube");
-        JButton btnCampeonato   = new JButton("Cadastrar Campeonato");
-        JButton btnAddClube     = new JButton("Add Clube ao Camp.");
-        JButton btnPartida      = new JButton("Cadastrar Partida");
-        JButton btnGrupo        = new JButton("Cadastrar Grupo");
-        JButton btnParticipante = new JButton("Cadastrar Participante");
-        JButton btnAposta       = new JButton("Registrar Aposta");
-
-        painelBotoes.add(btnClubes);
-        painelBotoes.add(btnCampeonato);
-        painelBotoes.add(btnAddClube);
-        painelBotoes.add(btnPartida);
-        painelBotoes.add(btnGrupo);
-        painelBotoes.add(btnParticipante);
-        painelBotoes.add(btnAposta);
-
         if (isAdmin) {
-            JButton btnResultado = new JButton("Registrar Resultado");
+            JButton btnClubes     = new JButton("Cadastrar Clube");
+            JButton btnCampeonato = new JButton("Cadastrar Campeonato");
+            JButton btnAddClube   = new JButton("Add Clube ao Camp.");
+            JButton btnPartida    = new JButton("Cadastrar Partida");
+            JButton btnResultado  = new JButton("Registrar Resultado");
+
+            painelBotoes.add(btnClubes);
+            painelBotoes.add(btnCampeonato);
+            painelBotoes.add(btnAddClube);
+            painelBotoes.add(btnPartida);
             painelBotoes.add(btnResultado);
+
+
+            btnClubes.addActionListener(e -> cadastrarClube());
+            btnCampeonato.addActionListener(e -> cadastrarCampeonato());
+            btnAddClube.addActionListener(e -> adicionarClubeAoCampeonato());
+            btnPartida.addActionListener(e -> cadastrarPartida());
             btnResultado.addActionListener(e -> registrarResultado());
+
+        } else {
+            JButton btnGrupo        = new JButton("Cadastrar Grupo");
+            JButton btnParticipante = new JButton("Cadastrar Participante");
+            JButton btnAposta       = new JButton("Registrar Aposta");
+
+            painelBotoes.add(btnGrupo);
+            painelBotoes.add(btnParticipante);
+            painelBotoes.add(btnAposta);
+
+            btnGrupo.addActionListener(e -> cadastrarGrupo());
+            btnParticipante.addActionListener(e -> cadastrarParticipante());
+            btnAposta.addActionListener(e -> registrarAposta());
         }
 
         taLog = new JTextArea();
@@ -83,14 +97,6 @@ public class MainFrame extends JFrame {
         add(painelBotoes, BorderLayout.WEST);
         add(scroll, BorderLayout.CENTER);
         add(rodape, BorderLayout.SOUTH);
-
-        btnClubes.addActionListener(e -> cadastrarClube());
-        btnCampeonato.addActionListener(e -> cadastrarCampeonato());
-        btnAddClube.addActionListener(e -> adicionarClubeAoCampeonato());
-        btnPartida.addActionListener(e -> cadastrarPartida());
-        btnGrupo.addActionListener(e -> cadastrarGrupo());
-        btnParticipante.addActionListener(e -> cadastrarParticipante());
-        btnAposta.addActionListener(e -> registrarAposta());
 
         log("Bem-vindo! Perfil: " + (isAdmin ? "Administrador" : "Usuário"));
     }
@@ -233,3 +239,5 @@ public class MainFrame extends JFrame {
         taLog.setCaretPosition(taLog.getDocument().getLength());
     }
 }
+
+

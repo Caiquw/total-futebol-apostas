@@ -85,6 +85,14 @@ public class InicializarDB {
                 )
             """);
 
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS usuarios (
+                    id    INTEGER PRIMARY KEY AUTOINCREMENT,
+                    login TEXT NOT NULL UNIQUE,
+                    senha TEXT NOT NULL
+                )
+            """);
+
         } catch (SQLException e) {
             System.out.println("Erro ao inicializar banco: " + e.getMessage());
         }
