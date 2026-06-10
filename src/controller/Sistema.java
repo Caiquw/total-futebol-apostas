@@ -115,11 +115,18 @@ public class Sistema {
     }
 
     public String registrarAposta(Participante participante, Partida partida, int golsMandante, int golsVisitante) {
+        if (golsMandante < 0 || golsVisitante < 0)
+            throw new SistemaException("Gols não podem ser negativos", "Aposta");
+
+        if (partida.isFinalizada())
+            throw new SistemaException("Partida já finalizada", "Aposta");
+
         if (!partida.ApostaPermitida())
-            return "Apostas Encerradas (partida já realizada ou ira acontecer em 20 minutos ou menos)";
+            throw new SistemaException("Apostas encerradas — menos de 20 min para a partida", "Aposta");
+
         for (Aposta a : apostas)
             if (a.getParticipante().equals(participante) && a.getPartida().equals(partida))
-                return participante.getNome() + " ja apostou nesta partida";
+                throw new SistemaException(participante.getNome() + " já apostou nesta partida", "Aposta");
         Aposta aposta = new Aposta(participante, partida, golsMandante, golsVisitante);
         apostas.add(aposta);
         apostaDAO.salvar(aposta);
@@ -127,6 +134,11 @@ public class Sistema {
     }
 
     public void registrarResultado(Partida partida, int golsMandante, int golsVisitante) {
+        if (golsMandante < 0 || golsVisitante < 0) {
+            System.out.println("Erro: gols não podem ser negativos");
+            return;
+        }
+
         partida.registrarResultado(golsMandante, golsVisitante);
         partidaDAO.atualizarResultado(partida);
         for (Aposta a : apostas) {

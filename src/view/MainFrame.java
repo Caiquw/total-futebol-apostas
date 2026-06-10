@@ -191,12 +191,23 @@ public class MainFrame extends JFrame {
         if (sistema.jaApostou(p, partida)) { log("Erro: " + p + " já apostou nesta partida."); return; }
         String gMStr = JOptionPane.showInputDialog(this, "Gols " + partida.getMandante() + ":");
         String gVStr = JOptionPane.showInputDialog(this, "Gols " + partida.getVisitante() + ":");
-        if (gMStr == null || gVStr == null) return;
+
+        if (gMStr == null || gMStr.isBlank() || gVStr == null || gVStr.isBlank()) {
+            log("Erro: informe os gols de ambos os times.");
+            return;
+        }
         try {
-            String res = sistema.registrarAposta(p, partida, Integer.parseInt(gMStr.trim()), Integer.parseInt(gVStr.trim()));
-            if ("ok".equals(res)) log("Aposta de " + p + ": " + partida.getMandante() + " " + gMStr.trim() + " x " + gVStr.trim() + " " + partida.getVisitante());
-            else log("Erro: " + res);
-        } catch (NumberFormatException ex) { log("Erro: número inválido."); }
+            String res = sistema.registrarAposta(p, partida,
+                    Integer.parseInt(gMStr.trim()),
+                    Integer.parseInt(gVStr.trim()));
+            if ("ok".equals(res))
+                log("Aposta de " + p + ": " + partida.getMandante() + " "
+                        + gMStr.trim() + " x " + gVStr.trim() + " " + partida.getVisitante());
+        } catch (SistemaException ex) {
+            log("Erro: " + ex.toString());
+        } catch (NumberFormatException ex) {
+            log("Erro: número inválido.");
+        }
     }
 
     private void registrarResultado() {
@@ -206,7 +217,10 @@ public class MainFrame extends JFrame {
         if (partida.isFinalizada()) { log("Resultado já registrado."); return; }
         String gMStr = JOptionPane.showInputDialog(this, "Gols " + partida.getMandante() + ":");
         String gVStr = JOptionPane.showInputDialog(this, "Gols " + partida.getVisitante() + ":");
-        if (gMStr == null || gVStr == null) return;
+        if (gMStr == null || gMStr.isBlank() || gVStr == null || gVStr.isBlank()) {
+            log("Erro: informe os gols de ambos os times.");
+            return;
+        }
         try {
             sistema.registrarResultado(partida, Integer.parseInt(gMStr.trim()), Integer.parseInt(gVStr.trim()));
             log("Resultado: " + partida.getMandante() + " " + gMStr.trim() + " x " + gVStr.trim() + " " + partida.getVisitante());
