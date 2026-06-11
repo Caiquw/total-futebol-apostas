@@ -1,6 +1,8 @@
 package controller;
 
-import dao.*;
+import dao.DAOFactory;
+import dao.InicializarDB;
+import dao.interfaces.*;
 import model.*;
 
 import java.time.LocalDateTime;
@@ -10,6 +12,7 @@ import java.util.List;
 public class Sistema {
 
     private static final int MAXIMO_GRUPOS = 5;
+
     private static Sistema instancia;
 
     private final List<Clube> clubes;
@@ -20,12 +23,12 @@ public class Sistema {
     private final List<Aposta> apostas;
     private final Administrador administrador;
 
-    private final ClubeDAO clubeDAO             = new ClubeDAO();
-    private final CampeonatoDAO campeonatoDAO   = new CampeonatoDAO();
-    private final GrupoDAO grupoDAO             = new GrupoDAO();
-    private final ParticipanteDAO participanteDAO = new ParticipanteDAO();
-    private final PartidaDAO partidaDAO         = new PartidaDAO();
-    private final ApostaDAO apostaDAO           = new ApostaDAO();
+    private final IClubeDAO clubeDAO             = DAOFactory.getClubeDAO();
+    private final ICampeonatoDAO campeonatoDAO   = DAOFactory.getCampeonatoDAO();
+    private final IGrupoDAO grupoDAO             = DAOFactory.getGrupoDAO();
+    private final IParticipanteDAO participanteDAO = DAOFactory.getParticipanteDAO();
+    private final IPartidaDAO partidaDAO         = DAOFactory.getPartidaDAO();
+    private final IApostaDAO apostaDAO           = DAOFactory.getApostaDAO();
 
     public List<Clube> getClubes()               { return clubes; }
     public List<Campeonato> getCampeonatos()      { return campeonatos; }
@@ -127,6 +130,7 @@ public class Sistema {
         for (Aposta a : apostas)
             if (a.getParticipante().equals(participante) && a.getPartida().equals(partida))
                 throw new SistemaException(participante.getNome() + " já apostou nesta partida", "Aposta");
+
         Aposta aposta = new Aposta(participante, partida, golsMandante, golsVisitante);
         apostas.add(aposta);
         apostaDAO.salvar(aposta);
@@ -160,29 +164,25 @@ public class Sistema {
 
     public Clube buscaClube(String nome) {
         for (Clube c : clubes)
-            if (c.getNome().equals(nome))
-                return c;
+            if (c.getNome().equals(nome)) return c;
         return null;
     }
 
     public Campeonato buscaCampeonato(String nome) {
         for (Campeonato c : campeonatos)
-            if (c.getNome().equals(nome))
-                return c;
+            if (c.getNome().equals(nome)) return c;
         return null;
     }
 
     public Grupo buscaGrupo(String nome) {
         for (Grupo g : grupos)
-            if (g.getNome().equals(nome))
-                return g;
+            if (g.getNome().equals(nome)) return g;
         return null;
     }
 
     public Participante buscaParticipante(String nome) {
         for (Participante p : participantes)
-            if (p.getNome().equals(nome))
-                return p;
+            if (p.getNome().equals(nome)) return p;
         return null;
     }
 

@@ -1,7 +1,7 @@
 package model;
 
-public interface Int_Exibir {
+import java.io.Serializable;
 
-    // retornar atributos para quem implementar a interface
+public interface Int_Exibir extends Serializable {
     String Exibir();
 }
